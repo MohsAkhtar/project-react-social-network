@@ -5,6 +5,9 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const passport = require('passport');
 
+// Loac validation
+const validProfileInput = require('../../validation/profile');
+
 // Load profile model
 const Profile = require('../../models/Profile');
 // Load user profile
@@ -42,6 +45,14 @@ router.post(
   '/',
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
+    const { errors, isValid } = validProfileInput(req.body);
+
+    // Check validation
+    if (!isValid) {
+      // return any errors with 400 status
+      return res.status(400).json(errors);
+    }
+
     // Get fields
     const profileFields = {};
     profileFields.user = req.user.id;
@@ -79,17 +90,15 @@ router.post(
         // create
 
         // check if handle exists
-        Profile.findOne(
-          { handle: profileFields.handle }.then(profile => {
-            if (profile) {
-              errors.handle = 'That handle already exists';
-              res.status(400).json(errors);
-            }
+        Profile.findOne({ handle: profileFields.handle }).then(profile => {
+          if (profile) {
+            errors.handle = 'That handle already exists';
+            res.status(400).json(errors);
+          }
 
-            // Else save profile
-            new Profile(profileFields).save().then(profile => res.json());
-          })
-        );
+          // Else save profile
+          new Profile(profileFields).save().then(profile => res.json());
+        });
       }
     });
   }
