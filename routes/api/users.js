@@ -23,19 +23,16 @@ router.get('/test', (req, res) => res.json({ msg: 'Users works' })); // res.json
 // @desc    Register user
 // @access  Public
 router.post('/register', (req, res) => {
-  console.log('hi');
   const { errors, isValid } = validateRegisterInput(req.body);
 
   // Check validation
   if (!isValid) {
-    console.log('not valid');
     return res.status(400).json(errors);
   }
 
   // Check if email is already registered
   User.findOne({ email: req.body.email }).then(user => {
     if (user) {
-      console.log('already exists');
       errors.email = 'Email already registered';
       return res.status(400).json(errors);
     } else {
