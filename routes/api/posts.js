@@ -32,9 +32,9 @@ router.get('/', (req, res) => {
 // @access  Public
 router.get('/:id', (req, res) => {
   Post.findById(req.params.id)
-    .then(posts => res.json(posts))
+    .then(post => res.json(post))
     .catch(err =>
-      res.status(404).json({ nopostsfound: 'No posts found with that id' })
+      res.status(404).json({ nopostsfound: 'No post found with that id' })
     );
 });
 
@@ -182,7 +182,7 @@ router.post(
         };
 
         // Add to comments array
-        post.comment.unshift(newComment);
+        post.comments.unshift(newComment);
 
         // Save comment to database
         post.save().then(post => res.json(post));
@@ -191,10 +191,10 @@ router.post(
   }
 );
 
-// @route   POST api/posts/comment/:id/:comment_id
+// @route   DELETE api/posts/comment/:id/:comment_id
 // @desc    Remove comment from post
 // @access  Private
-router.post(
+router.delete(
   '/comment/:id/:comment_id',
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
@@ -202,7 +202,7 @@ router.post(
       .then(post => {
         // Check if comment exists
         if (
-          post.comment.filter(
+          post.comments.filter(
             comment => comment._id.toString() === req.params.comment_id
           ).length === 0
         ) {
@@ -212,7 +212,7 @@ router.post(
         }
 
         // Get remove index
-        const removeIndex = post.comment
+        const removeIndex = post.comments
           .map(item => item._id.toString())
           .indexOf(req.params.comment_id);
 
