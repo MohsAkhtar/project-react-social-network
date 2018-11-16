@@ -34,6 +34,13 @@ class Login extends Component {
     this.props.loginUser(userData);
   }
 
+  // if logged in we want to redirect to dashboard
+  componentDidMount(){
+    if(this.props.auth.isAuthenticated){
+      this.props.history.push('/dashboard')
+    }
+  }
+
   componentWillReceiveProps(nextProps) {
     // if user gets authenitcated
     if (nextProps.auth.isAuthenticated) {

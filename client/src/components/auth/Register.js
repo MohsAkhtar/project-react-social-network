@@ -39,6 +39,13 @@ class Register extends Component {
     this.props.registerUser(newUser, this.props.history);
   }
 
+  // if logged in we want to redirect to dashboard
+  componentDidMount(){
+    if(this.props.auth.isAuthenticated){
+      this.props.history.push('/dashboard')
+    }
+  }
+
   // lifecycle method when component receives new properties
   componentWillReceiveProps(nextProps) {
     // If next received property is getting error prop from redux state, map state here to props.
