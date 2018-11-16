@@ -16,6 +16,7 @@ import Login from './components/auth/Login';
 import Dashboard from './components/dashboard/Dashboard';
 
 import './App.css';
+import { clearCurrentProfile } from './actions/profileActions';
 
 // Check for token
 if (localStorage.jwtToken) {
@@ -32,7 +33,8 @@ if (localStorage.jwtToken) {
     // Logout user
     store.dispatch(logoutUser());
 
-    // TODO: Clear Current Profile
+    // Clear Current Profile
+    store.dispatch(clearCurrentProfile());
 
     // Redirect to Login
     window.location.href = '/login';
