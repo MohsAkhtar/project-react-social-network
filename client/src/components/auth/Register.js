@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
 import classnames from 'classnames';
 import { connect } from 'react-redux'; // connect redux to component
 import { registerUser } from '../../actions/authAction';
@@ -34,8 +35,8 @@ class Register extends Component {
       password2: this.state.password2
     };
 
-    // any action we call in we pass through props
-    this.props.registerUser(newUser);
+    // this.props.history allows  us to redirect from within the registerUser action
+    this.props.registerUser(newUser, this.props.history);
   }
 
   // lifecycle method when component receives new properties
@@ -147,4 +148,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   { registerUser }
-)(Register);
+)(withRouter(Register));
