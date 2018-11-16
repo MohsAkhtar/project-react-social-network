@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 // using 'as Router' as it looks cleaner
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
 import setAuthToken from './utils/setAuthToken';
 import { setCurrentUser, logoutUser } from './actions/authAction';
 
 import { Provider } from 'react-redux'; // provide app with store
 import store from './store';
+
+import PrivateRoute from './components/common/PrivateRoute';
 
 import Navbar from './components/layout/Navbar';
 import Landing from './components/layout/Landing';
@@ -42,6 +44,7 @@ if (localStorage.jwtToken) {
 }
 
 class App extends Component {
+  // need Switch for PrivateRoute to allow for redirect
   render() {
     return (
       <Provider store={store}>
@@ -52,7 +55,9 @@ class App extends Component {
             <div className="container">
               <Route exact path="/register" component={Register} />
               <Route exact path="/login" component={Login} />
-              <Route exact path="/dashboard" component={Dashboard} />
+              <Switch>
+                <PrivateRoute exact path="/dashboard" component={Dashboard} />
+              </Switch>
             </div>
             <Footer />
           </div>
