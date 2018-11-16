@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { connect } from 'react-redux'; // connect redux to component
 import { registerUser } from '../../actions/authAction';
@@ -36,11 +36,15 @@ class Register extends Component {
 
     // any action we call in we pass through props
     this.props.registerUser(newUser);
+  }
 
-    // axios
-    //   .post('/api/users/register', newUser)
-    //   .then(res => console.log(res.data))
-    //   .catch(err => this.setState({ errors: err.response.data }));
+  // lifecycle method when component receives new properties
+  componentWillReceiveProps(nextProps) {
+    // If next received property is getting error prop from redux state, map state here to props.
+    // So we are setting the redux state to component state basically so nothing has to be changed for error validation in render
+    if (nextProps.errors) {
+      this.setState({ errors: nextProps.errors });
+    }
   }
 
   render() {
@@ -128,7 +132,19 @@ class Register extends Component {
   }
 }
 
+Register.propTypes = {
+  registerUser: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired
+};
+
+// to get state in component
+const mapStateToProps = state => ({
+  auth: state.auth,
+  errors: state.errors
+});
+
 export default connect(
-  null,
+  mapStateToProps,
   { registerUser }
 )(Register);
