@@ -2,6 +2,8 @@
 
 Users can sign up, create profiles and add their credentials.
 
+If you do not wish to sign up you can still view the profiles of users by clicking on the profiles button in the navbar.
+
 Profile pictures are linked through gravatar, so if your email has gravatar image enabled it should display.
 
 To delete your account click the delete button if you are done with demoing the site.
