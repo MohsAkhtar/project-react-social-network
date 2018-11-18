@@ -5,6 +5,9 @@ import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 
 class PostItem extends Component {
+  onDeleteClick(id) {
+    console.log(id);
+  }
   render() {
     const { post, auth } = this.props;
 
@@ -34,9 +37,15 @@ class PostItem extends Component {
             <Link to="/post" className="btn btn-info mr-1">
               Comments
             </Link>
-            <button type="button" className="btn btn-danger mr-1">
-              <i className="fas fa-times" />
-            </button>{' '}
+            {post.user === auth.user.id ? (
+              <button
+                onClick={this.onDeleteClick.bind(this, post._id)}
+                type="button"
+                className="btn btn-danger mr-1"
+              >
+                <i className="fas fa-times" />
+              </button>
+            ) : null}
           </div>
         </div>
       </div>
