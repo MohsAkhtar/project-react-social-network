@@ -4,6 +4,7 @@ import {
   ADD_POST,
   GET_ERRORS,
   GET_POSTS,
+  GET_POST,
   POST_LOADING,
   DELETE_POST
 } from './types';
@@ -26,7 +27,7 @@ export const addPost = postData => dispatch => {
     );
 };
 
-// Get Post
+// Get all Posts for feed
 export const getPosts = () => dispatch => {
   dispatch(setPostLoading());
   axios
@@ -40,6 +41,25 @@ export const getPosts = () => dispatch => {
     .catch(err =>
       dispatch({
         type: GET_POSTS, // don't want GET_ERRORS as we are not submitting form
+        payload: null
+      })
+    );
+};
+
+// Get Posts For A Post
+export const getPost = id => dispatch => {
+  dispatch(setPostLoading());
+  axios
+    .get(`/api/posts/${id}`)
+    .then(res =>
+      dispatch({
+        type: GET_POST,
+        payload: res.data
+      })
+    )
+    .catch(err =>
+      dispatch({
+        type: GET_POST, // don't want GET_ERRORS as we are not submitting form
         payload: null
       })
     );
