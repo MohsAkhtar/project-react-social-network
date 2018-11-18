@@ -12,6 +12,7 @@ Have fun!
 
 ## TODO
 
+- Add 404 routes
 - Add user picture uploads for profile picture
 - Enable editting of education credentials when submitted
 - Enable editting of experience credentials when submitted
